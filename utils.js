@@ -1,3 +1,5 @@
+const genres = require('./data')
+
 const lookUpGenre = (id) => {
     return genres.find((genre) => genre.id === parseInt(id));
   };

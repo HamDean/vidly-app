@@ -1,15 +1,10 @@
 const express = require("express");
-const Joi = require("joi");
 const genres = require('./data')
+const schema = require('./schema')
 const { badRequest, lookUpGenre, notFound} = require('./utils')
 const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000;
-
-
-const schema = Joi.object({
-  genre: Joi.string().required(),
-});
 
 app.get("/api/genres", (req, res) => {
   res.send(genres);
