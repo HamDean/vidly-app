@@ -1,16 +1,11 @@
 const express = require("express");
 const Joi = require("joi");
+const genres = require('./data')
 const { badRequest, lookUpGenre, notFound} = require('./utils')
 const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000;
 
-const genres = [
-  { id: 1, genre: "adventure" },
-  { id: 2, genre: "fantasy" },
-  { id: 3, genre: "horro" },
-  { id: 4, genre: "comedy" },
-];
 
 const schema = Joi.object({
   genre: Joi.string().required(),
