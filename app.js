@@ -15,6 +15,14 @@ const lookUpGenre = (id) => {
   return genres.find((genre) => genre.id === parseInt(id));
 };
 
+const notFound = (res) => {
+    return res.status(400).send("genre not found :(");
+}
+
+const badRequest = (res, error) => {
+    return res.status(400).send(error.details[0].message)
+}
+
 const schema = Joi.object({
   genre: Joi.string().required(),
 });
@@ -35,7 +43,7 @@ app.post("/api/genres", (req, res) => {
   const newGenre = req.body;
 
   const { error } = schema.validate(newGenre);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error) return badRequest(res, error)
 
   const genre = {
     id: genres.length + 1,
@@ -52,10 +60,10 @@ app.put("/api/genres/:id", (req, res) => {
 
   const genre = lookUpGenre(req.params.id);
 
-  if (!genre) return res.status(404).send("genre not found :(");
+  if (!genre) return notFound(res)
 
   const { error } = schema.validate(genreBody);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error) return badRequest(res, error);
 
   genre.genre = genreBody.genre;
 
