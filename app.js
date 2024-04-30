@@ -1,27 +1,16 @@
 const express = require("express");
 const Joi = require("joi");
+const { badRequest, lookUpGenre, notFound} = require('./utils')
 const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000;
 
-let genres = [
+const genres = [
   { id: 1, genre: "adventure" },
   { id: 2, genre: "fantasy" },
   { id: 3, genre: "horro" },
   { id: 4, genre: "comedy" },
 ];
-
-const lookUpGenre = (id) => {
-  return genres.find((genre) => genre.id === parseInt(id));
-};
-
-const notFound = (res) => {
-    return res.status(400).send("genre not found :(");
-}
-
-const badRequest = (res, error) => {
-    return res.status(400).send(error.details[0].message)
-}
 
 const schema = Joi.object({
   genre: Joi.string().required(),
