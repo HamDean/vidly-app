@@ -47,4 +47,19 @@ app.post("/api/genres", (req, res) => {
   res.send(genre);
 });
 
+app.put("/api/genres/:id", (req, res) => {
+  const genreBody = req.body;
+
+  const genre = lookUpGenre(req.params.id);
+
+  if (!genre) return res.status(404).send("genre not found :(");
+
+  const { error } = schema.validate(genreBody);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  genre.genre = genreBody.genre;
+
+  res.send(genre);
+});
+
 app.listen(port, () => console.log(`listening on port ${port}`));
