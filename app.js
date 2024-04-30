@@ -4,7 +4,7 @@ const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000;
 
-const genres = [
+let genres = [
   { id: 1, genre: "adventure" },
   { id: 2, genre: "fantasy" },
   { id: 3, genre: "horro" },
@@ -69,5 +69,16 @@ app.put("/api/genres/:id", (req, res) => {
 
   res.send(genre);
 });
+
+app.delete("/api/genres/:id", (req, res) => {
+    const genre = lookUpGenre(req.params.id)
+
+    if(!genre) return notFound(res);
+
+    const index = genres.indexOf(genre);
+    genres.splice(index, 1)
+
+    res.send(genre)
+})
 
 app.listen(port, () => console.log(`listening on port ${port}`));
