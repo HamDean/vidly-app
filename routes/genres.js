@@ -22,7 +22,7 @@ const Genre = mongoose.model("Genre", genreSchema);
 
 router.get("/", async (req, res) => {
   res.send(JSON.stringify(await Genre.find()));
-  console.log(await Genre.find())
+  console.log(await Genre.find());
 });
 
 router.get("/:id", async (req, res) => {
@@ -68,15 +68,13 @@ router.put("/:id", (req, res) => {
   res.send(genre);
 });
 
-router.delete("/:id", (req, res) => {
-  const genre = lookUpGenre(req.params.id);
-
-  if (!genre) return notFound(res);
-
-  const index = genres.indexOf(genre);
-  genres.splice(index, 1);
-
-  res.send(genre);
+router.delete("/:id", async (req, res) => {
+  try {
+   const genre = await Genre.findByIdAndDelete(req.params.id);
+   res.send(genre)
+  } catch (error) {
+    console.log(error.message);
+  }
 });
 
 module.exports = router;
