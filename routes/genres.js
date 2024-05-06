@@ -1,11 +1,27 @@
+const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 const genres = require("../data");
 const schema = require("../schema");
 const { badRequest, lookUpGenre, notFound } = require("../utils");
 
-router.get("/", (req, res) => {
-  res.send(genres);
+mongoose
+  .connect("mongodb://localhost:27017/genres")
+  .then(() => console.log("connection to database successfull..."))
+  .catch((err) => console.log("could not connect to databse :("));
+
+const genreSchema = new mongoose.Schema({
+  genre: {
+    type: String,
+    required: true,
+    minlength: 3,
+  },
+});
+
+const Genre = mongoose.model("Genre", genreSchema);
+
+router.get("/", async (req, res) => {
+  await res.Genre.find();
 });
 
 router.get("/:id", (req, res) => {
@@ -16,18 +32,22 @@ router.get("/:id", (req, res) => {
   res.send(genre);
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const newGenre = req.body;
 
   const { error } = schema.validate(newGenre);
   if (error) return badRequest(res, error);
 
-  const genre = {
-    id: genres.length + 1,
+  const genre = new Genre({
     genre: newGenre.genre,
-  };
+  });
 
-  genres.push(genre);
+  try {
+    await genre.save();
+    console.log("genre saved...");
+  } catch (error) {
+    console.log(error);
+  }
 
   res.send(genre);
 });
