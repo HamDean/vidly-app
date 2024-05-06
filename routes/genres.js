@@ -53,25 +53,26 @@ router.post("/", async (req, res) => {
   res.send(genre);
 });
 
-router.put("/:id", (req, res) => {
-  const genreBody = req.body;
-
-  const genre = lookUpGenre(req.params.id);
-
+router.put("/:id", async (req, res) => {
+  const genre = await Genre.find({ _id: req.params.id });
+  console.log(genre)
   if (!genre) return notFound(res);
 
+  const genreBody = req.body;
   const { error } = schema.validate(genreBody);
   if (error) return badRequest(res, error);
 
-  genre.genre = genreBody.genre;
+  const result = await Genre.findByIdAndUpdate(req.params.id, {
+    genre: genreBody.genre
+  })
 
-  res.send(genre);
+  res.send(result);
 });
 
 router.delete("/:id", async (req, res) => {
   try {
-   const genre = await Genre.findByIdAndDelete(req.params.id);
-   res.send(genre)
+    const genre = await Genre.findByIdAndDelete(req.params.id);
+    res.send(genre);
   } catch (error) {
     console.log(error.message);
   }
