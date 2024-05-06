@@ -19,8 +19,8 @@ const Genre = mongoose.model("Genre", new mongoose.Schema({
 }));
 
 router.get("/", async (req, res) => {
-  res.send(JSON.stringify(await Genre.find()));
-  console.log(await Genre.find());
+  const genres = await Genre.find();
+  console.log(genres)
 });
 
 router.get("/:id", async (req, res) => {
