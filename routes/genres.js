@@ -9,18 +9,21 @@ mongoose
   .then(() => console.log("connection to database successfull..."))
   .catch((err) => console.log("could not connect to databse :("));
 
-const Genre = mongoose.model("Genre", new mongoose.Schema({
-  genre: {
-    type: String,
-    required: true,
-    minlength: 4,
-    maxlength: 50
-  },
-}));
+const Genre = mongoose.model(
+  "Genre",
+  new mongoose.Schema({
+    genre: {
+      type: String,
+      required: true,
+      minlength: 4,
+      maxlength: 50,
+    },
+  })
+);
 
 router.get("/", async (req, res) => {
   const genres = await Genre.find();
-  console.log(genres)
+  console.log(genres);
 });
 
 router.get("/:id", async (req, res) => {
@@ -52,19 +55,17 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  const genre = await Genre.find({ _id: req.params.id });
-  console.log(genre)
-  if (!genre) return notFound(res);
-
-  const genreBody = req.body;
-  const { error } = schema.validate(genreBody);
+  const { error } = schema.validate(req.body);
   if (error) return badRequest(res, error);
 
-  const result = await Genre.findByIdAndUpdate(req.params.id, {
-    genre: genreBody.genre
-  })
+  const genre = await Genre.findByIdAndUpdate(
+    req.params.id,
+    { genre: req.body.genre },
+    { new: true }
+  );
+  if (!genre) return notFound(res);
 
-  res.send(result);
+  res.send(genre);
 });
 
 router.delete("/:id", async (req, res) => {
