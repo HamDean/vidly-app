@@ -1,24 +1,22 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
-const genres = require("../data");
 const schema = require("../schema");
-const { badRequest, lookUpGenre, notFound } = require("../utils");
+const { badRequest, notFound } = require("../utils");
 
 mongoose
   .connect("mongodb://localhost:27017/genres")
   .then(() => console.log("connection to database successfull..."))
   .catch((err) => console.log("could not connect to databse :("));
 
-const genreSchema = new mongoose.Schema({
+const Genre = mongoose.model("Genre", new mongoose.Schema({
   genre: {
     type: String,
     required: true,
-    minlength: 3,
+    minlength: 4,
+    maxlength: 50
   },
-});
-
-const Genre = mongoose.model("Genre", genreSchema);
+}));
 
 router.get("/", async (req, res) => {
   res.send(JSON.stringify(await Genre.find()));
