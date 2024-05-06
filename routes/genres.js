@@ -21,7 +21,7 @@ const genreSchema = new mongoose.Schema({
 const Genre = mongoose.model("Genre", genreSchema);
 
 router.get("/", async (req, res) => {
-  await res.Genre.find();
+  res.send(JSON.stringify(await Genre.find()));
 });
 
 router.get("/:id", (req, res) => {
