@@ -7,7 +7,7 @@ const { badRequest, notFound } = require("../utils");
 mongoose
   .connect("mongodb://localhost:27017/genres")
   .then(() => console.log("connection to database successfull..."))
-  .catch((err) => console.log("could not connect to databse :("));
+  .catch((err) => console.log("could not connect to databse :(",err));
 
 const Genre = mongoose.model(
   "Genre",
@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const genre = await Genre.find({ _id: req.params.id });
 
-  if (!genre) return res.status(404).send("No genre found :(");
+  if (!genre) return notFound();
 
   res.send(JSON.stringify(genre));
 });
@@ -66,15 +66,13 @@ router.put("/:id", async (req, res) => {
   if (!genre) return notFound(res);
 
   res.send(genre);
-});
+},);
 
 router.delete("/:id", async (req, res) => {
-  try {
     const genre = await Genre.findByIdAndDelete(req.params.id);
+    if (!genre) return notFound();
+    
     res.send(genre);
-  } catch (error) {
-    console.log(error.message);
-  }
 });
 
 module.exports = router;
