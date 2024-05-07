@@ -38,8 +38,26 @@ router.post("/", async (req, res) => {
     isGold: req.body.isGold,
   });
 
-  await customer.save();
+  //   await customer.save();
   res.send(customer);
+});
+
+router.put("/:id", async (req, res) => {
+  try {
+    const customer = await Customer.findByIdAndUpdate(
+      req.params.id,
+      {
+        name: req.body.name,
+        phone: req.body.phone,
+        isGold: req.body.isGold,
+      },
+      { new: true }
+    );
+    res.send(customer);
+  } catch (error) {
+    console.log(error.message);
+    return notFound(res);
+  }
 });
 
 router.delete("/:id", async (req, res) => {
