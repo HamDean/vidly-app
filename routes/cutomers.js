@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const { customerInterface } = require("../schema");
-const { badRequest } = require("../utils");
+const { badRequest, notFound } = require("../utils");
 const router = express.Router();
 
 const customerSchema = new mongoose.Schema({
@@ -17,6 +17,7 @@ const customerSchema = new mongoose.Schema({
     type: String,
     minlength: 10,
     maxlength: 10,
+    unique: true,
   },
 });
 
@@ -37,7 +38,13 @@ router.post("/", async (req, res) => {
     isGold: req.body.isGold,
   });
 
-  await customer.save();
+  //   await customer.save();
+  res.send(customer);
+});
+
+router.delete("/:id", async (req, res) => {
+  const customer = await Customer.findByIdAndDelete(req.params.id);
+  if (!customer) return notFound(res);
   res.send(customer);
 });
 
