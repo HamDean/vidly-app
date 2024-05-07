@@ -27,11 +27,12 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const genre = await Genre.findById(req.params.id);
-
-  if (!genre) return notFound(res);
-
-  res.send(genre);
+  try {
+    const genre = await Genre.findById(req.params.id);
+    res.send(genre);
+  } catch (error) {
+    return notFound(res);
+  }
 });
 
 router.post("/", async (req, res) => {
@@ -58,21 +59,25 @@ router.put("/:id", async (req, res) => {
   const { error } = genreSchema.validate(req.body);
   if (error) return badRequest(res, error);
 
-  const genre = await Genre.findByIdAndUpdate(
-    req.params.id,
-    { genre: req.body.genre },
-    { new: true }
-  );
-  if (!genre) return notFound(res);
-
-  res.send(genre);
+  try {
+    const genre = await Genre.findByIdAndUpdate(
+      req.params.id,
+      { genre: req.body.genre },
+      { new: true }
+    );
+    res.send(genre);
+  } catch (error) {
+    return notFound(res);
+  }
 });
 
 router.delete("/:id", async (req, res) => {
-  const genre = await Genre.findByIdAndDelete(req.params.id);
-  if (!genre) return notFound();
-
-  res.send(genre);
+  try {
+    const genre = await Genre.findByIdAndDelete(req.params.id);
+    res.send(genre);
+  } catch (error) {
+    return notFound(res);
+  }
 });
 
 module.exports = router;

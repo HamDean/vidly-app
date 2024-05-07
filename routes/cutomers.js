@@ -38,14 +38,17 @@ router.post("/", async (req, res) => {
     isGold: req.body.isGold,
   });
 
-  //   await customer.save();
+  await customer.save();
   res.send(customer);
 });
 
 router.delete("/:id", async (req, res) => {
-  const customer = await Customer.findByIdAndDelete(req.params.id);
-  if (!customer) return notFound(res);
-  res.send(customer);
+  try {
+    const customer = await Customer.findByIdAndDelete(req.params.id);
+    res.send(customer);
+  } catch (error) {
+    return notFound(res);
+  }
 });
 
 module.exports = router;
