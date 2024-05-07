@@ -25,6 +25,11 @@ const customerSchema = new mongoose.Schema({
 
 const Customer = mongoose.model("Customer", customerSchema);
 
+router.get("/", async (req, res) => {
+  const customers = await Customer.find();
+  res.send(customers);
+});
+
 
 
 module.exports = router;
