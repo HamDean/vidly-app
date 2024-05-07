@@ -30,6 +30,15 @@ router.get("/", async (req, res) => {
   res.send(customers);
 });
 
+router.post("/", async (req, res) => {
+  const customer = new Customer({
+    name: req.body.name,
+    phone: req.body.phone,
+    isGold: req.body.isGold,
+  });
 
+  await customer.save();
+  res.send(customer);
+});
 
 module.exports = router;
