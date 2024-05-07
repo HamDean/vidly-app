@@ -27,7 +27,7 @@ const customerSchema = new mongoose.Schema({
 const Customer = mongoose.model("Customer", customerSchema);
 
 router.get("/", async (req, res) => {
-  const customers = await Customer.find().sort('name');
+  const customers = await Customer.find().sort("name");
   res.send(customers);
 });
 
@@ -37,7 +37,7 @@ router.get("/:id", async (req, res) => {
     res.send(customer);
   } catch (error) {
     console.log("error", error.message);
-    return notFound(res);
+    return notFound(res, "customer");
   }
 });
 
@@ -69,7 +69,7 @@ router.put("/:id", async (req, res) => {
     res.send(customer);
   } catch (error) {
     console.log(error.message);
-    return notFound(res);
+    return notFound(res, "customer");
   }
 });
 
@@ -78,11 +78,8 @@ router.delete("/:id", async (req, res) => {
     const customer = await Customer.findByIdAndDelete(req.params.id);
     res.send(customer);
   } catch (error) {
-    return notFound(res);
+    return notFound(res, "customer");
   }
 });
 
 module.exports = router;
-
-// sort customers by name
-// cutomize not found genres/customers

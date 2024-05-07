@@ -1,6 +1,6 @@
   
-  const notFound = (res) => {
-      return res.status(404).send("genre not found :(");
+  const notFound = (res, message='genre') => {
+      return res.status(404).send(`${message} not found :(`);
   }
   
   const badRequest = (res, error) => {
