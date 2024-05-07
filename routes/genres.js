@@ -5,7 +5,7 @@ const schema = require("../schema");
 const { badRequest, notFound } = require("../utils");
 
 mongoose
-  .connect("mongodb://localhost:27017/genres")
+  .connect("mongodb://localhost:27017/vidly")
   .then(() => console.log("connection to database successfull..."))
   .catch((err) => console.log("could not connect to databse :(", err));
 
