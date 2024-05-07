@@ -4,11 +4,6 @@ const router = express.Router();
 const { genreSchema } = require("../schema");
 const { badRequest, notFound } = require("../utils");
 
-mongoose
-  .connect("mongodb://localhost:27017/vidly")
-  .then(() => console.log("connection to database successfull..."))
-  .catch((err) => console.log("could not connect to databse :(", err));
-
 const Genre = mongoose.model(
   "Genre",
   new mongoose.Schema({
