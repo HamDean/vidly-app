@@ -5,7 +5,10 @@ const { badRequest, notFound } = require("../utils");
 const router = express.Router();
 
 const customerSchema = new mongoose.Schema({
-  isGold: Boolean,
+  isGold: {
+    type: Boolean,
+    default: false,
+  },
   name: {
     type: String,
     required: true,
@@ -26,6 +29,16 @@ const Customer = mongoose.model("Customer", customerSchema);
 router.get("/", async (req, res) => {
   const customers = await Customer.find();
   res.send(customers);
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const customer = await Customer.findById(req.params.id);
+    res.send(customer);
+  } catch (error) {
+    console.log("error", error.message);
+    return notFound(res);
+  }
 });
 
 router.post("/", async (req, res) => {
@@ -70,3 +83,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 module.exports = router;
+
+// seperate the db connection to the app.js
+// sort customers by name
+// cutomize not found genres/customers
