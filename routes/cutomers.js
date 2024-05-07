@@ -27,7 +27,7 @@ const customerSchema = new mongoose.Schema({
 const Customer = mongoose.model("Customer", customerSchema);
 
 router.get("/", async (req, res) => {
-  const customers = await Customer.find();
+  const customers = await Customer.find().sort('name');
   res.send(customers);
 });
 
@@ -84,6 +84,5 @@ router.delete("/:id", async (req, res) => {
 
 module.exports = router;
 
-// seperate the db connection to the app.js
 // sort customers by name
 // cutomize not found genres/customers
