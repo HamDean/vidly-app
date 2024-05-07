@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
-const schema = require("../schema");
+const { genreSchema } = require("../schema");
 const { badRequest, notFound } = require("../utils");
 
 mongoose
@@ -37,7 +37,7 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   const newGenre = req.body;
 
-  const { error } = schema.validate(newGenre);
+  const { error } = genreSchema.validate(newGenre);
   if (error) return badRequest(res, error);
 
   const genre = new Genre({
@@ -55,7 +55,7 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  const { error } = schema.validate(req.body);
+  const { error } = genreSchema.validate(req.body);
   if (error) return badRequest(res, error);
 
   const genre = await Genre.findByIdAndUpdate(

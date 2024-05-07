@@ -1,11 +1,8 @@
 const mongoose = require("mongoose");
 const express = require("express");
+const { customerInterface } = require("../schema");
+const { badRequest } = require("../utils");
 const router = express.Router();
-
-mongoose
-  .connect("mongodb://localhost:27017/customers")
-  .then(() => console.log("connected successfully..."))
-  .catch((err) => console.log("could not connect :(", err));
 
 const customerSchema = new mongoose.Schema({
   isGold: Boolean,
@@ -31,6 +28,9 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  const { error } = customerInterface.validate(req.body);
+  if (error) return badRequest(res, error);
+
   const customer = new Customer({
     name: req.body.name,
     phone: req.body.phone,
