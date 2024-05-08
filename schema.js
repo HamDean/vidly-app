@@ -14,7 +14,7 @@ const movieSchema = Joi.object({
   title: Joi.string().min(5).max(255).required(),
   numberInStock: Joi.number().positive().max(255),
   dailyRentalRate: Joi.number().positive().max(255),
-  genre: Joi.string().required()
+  genreId: Joi.string().required()
 })
 
 module.exports = { genreSchema, customerInterface, movieSchema };
