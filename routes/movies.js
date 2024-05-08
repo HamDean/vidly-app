@@ -40,7 +40,7 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const { error } = movieSchema.validate(req.body);
   if (error) return badRequest(res, error);
-  
+
   const movie = await Movie.findByIdAndUpdate(
     req.params.id,
     {
@@ -55,6 +55,13 @@ router.put("/:id", async (req, res) => {
     },
     { new: true }
   );
+  res.send(movie);
+});
+
+router.delete("/:id", async (req, res) => {
+  const movie = await Movie.findByIdAndDelete(req.params.id);
+  if (!movie) return notFound(res);
+  
   res.send(movie);
 });
 
