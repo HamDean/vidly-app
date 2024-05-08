@@ -9,17 +9,18 @@ const movieSchema = new mongoose.Schema({
   numberInStock: {
     type: Number,
     min: 0,
+    max: 255,
     default: 0,
   },
   dailyRentalRate: {
     type: Number,
     min: 0,
+    max: 255,
     default: 0,
   },
-  genre: genreSchema
+  genre: { type: genreSchema, required: true },
 });
 
-const Movie = mongoose.model('Movie', movieSchema)
+const Movie = mongoose.model("Movie", movieSchema);
 
 module.exports = Movie;
-
