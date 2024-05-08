@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const genre = require("../models/genre");
+const { genreSchema } = require("../models/genre");
 
 const movieSchema = new mongoose.Schema({
   title: {
@@ -14,10 +14,7 @@ const movieSchema = new mongoose.Schema({
     type: Number,
     min: 0,
   },
-  genre: {
-    type: mongoose.Schema.type,
-    ref: genre,
-  },
+  genre: genreSchema
 });
 
 const Movie = mongoose.model('Movie', movieSchema)
