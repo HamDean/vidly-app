@@ -10,4 +10,11 @@ const customerInterface = Joi.object({
   phone: Joi.string().min(10).max(10).required(),
 });
 
-module.exports = { genreSchema, customerInterface };
+const movieSchema = Joi.object({
+  title: Joi.string().required(),
+  numberInStock: Joi.number().positive(),
+  dailyRentalRate: Joi.number().positive(),
+  genre: Joi.string()
+})
+
+module.exports = { genreSchema, customerInterface, movieSchema };
