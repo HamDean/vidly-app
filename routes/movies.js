@@ -38,6 +38,9 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
+  const { error } = movieSchema.validate(req.body);
+  if (error) return badRequest(res, error);
+  
   const movie = await Movie.findByIdAndUpdate(
     req.params.id,
     {
@@ -46,8 +49,8 @@ router.put("/:id", async (req, res) => {
         numberInStock: req.body.numberInStock,
         dailyRentalRate: req.body.dailyRentalRate,
         genre: {
-            genre: req.body.genre
-        }
+          genre: req.body.genre,
+        },
       },
     },
     { new: true }
