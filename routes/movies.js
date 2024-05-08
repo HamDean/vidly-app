@@ -37,4 +37,22 @@ router.post("/", async (req, res) => {
   res.send(movie);
 });
 
+router.put("/:id", async (req, res) => {
+  const movie = await Movie.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: {
+        title: req.body.title,
+        numberInStock: req.body.numberInStock,
+        dailyRentalRate: req.body.dailyRentalRate,
+        genre: {
+            genre: req.body.genre
+        }
+      },
+    },
+    { new: true }
+  );
+  res.send(movie);
+});
+
 module.exports = router;
