@@ -9,10 +9,12 @@ const movieSchema = new mongoose.Schema({
   numberInStock: {
     type: Number,
     min: 0,
+    default: 0,
   },
   dailyRentalRate: {
     type: Number,
     min: 0,
+    default: 0,
   },
   genre: genreSchema
 });

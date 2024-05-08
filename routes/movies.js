@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Movie } = require("../models/movie");
+const Movie = require("../models/movie");
 
 router.get("/", async (req, res) => {
   try {
@@ -12,6 +12,17 @@ router.get("/", async (req, res) => {
   }
 });
 
-module.exports = router;
+router.post("/", async (req, res) => {
+  const movie = new Movie({
+    title: req.body.title,
+    numberInstock: req.body.numberInstock,
+    dailyRentalRate: req.body.dailyRentalRate,
+    genre: { genre: req.body.genre },
+  });
 
-//* don't forget to fix genre imports of the movie module and references as well
+  await movie.save();
+
+  res.send(movie);
+});
+
+module.exports = router;
