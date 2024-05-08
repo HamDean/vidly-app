@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Movie = require("../models/movie");
 const { movieSchema } = require("../schema");
-const { badRequest } = require("../utils");
+const { badRequest, notFound } = require("../utils");
 
 router.get("/", async (req, res) => {
   try {
@@ -14,24 +14,27 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  const movie = await Movie.findById(req.params.id);
+  if (!movie) return notFound(res);
+
+  res.send(movie);
+});
+
 router.post("/", async (req, res) => {
   const { error } = movieSchema.validate(req.body);
   if (error) return badRequest(res, error);
 
-  try {
-    const movie = new Movie({
-      title: req.body.title,
-      numberInstock: req.body.numberInstock,
-      dailyRentalRate: req.body.dailyRentalRate,
-      genre: { genre: req.body.genre },
-    });
+  const movie = new Movie({
+    title: req.body.title,
+    numberInstock: req.body.numberInstock,
+    dailyRentalRate: req.body.dailyRentalRate,
+    genre: { genre: req.body.genre },
+  });
 
-    await movie.save();
+  await movie.save();
 
-    res.send(movie);
-  } catch (error) {
-    return res.send(error);
-  }
+  res.send(movie);
 });
 
 module.exports = router;
