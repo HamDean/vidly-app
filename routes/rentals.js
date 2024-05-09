@@ -1,8 +1,10 @@
-const express = require('express')
+const Rental = require("../models/rentals");
+const express = require("express");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.send("Rentals")
-})
+router.get("/", async (req, res) => {
+  const rentals = await Rental.find();
+  res.send(rentals);
+});
 
-module.exports = router
+module.exports = router;
