@@ -1,5 +1,5 @@
 const Joi = require("joi");
-Joi.objectId = require('joi-objectid')(Joi)
+Joi.objectId = require("joi-objectid")(Joi);
 
 const genreSchema = Joi.object({
   genre: Joi.string().required(),
@@ -23,4 +23,16 @@ const rentalSchema = Joi.object({
   customerId: Joi.objectId().required(),
 });
 
-module.exports = { genreSchema, customerInterface, movieSchema, rentalSchema };
+const userSchema = Joi.object({
+  name: Joi.string().required().min(3).max(50),
+  email: Joi.string().min(5).max(255).required().email(),
+  password: Joi.string().required().min(8).max(255),
+});
+
+module.exports = {
+  genreSchema,
+  customerInterface,
+  movieSchema,
+  rentalSchema,
+  userSchema,
+};
