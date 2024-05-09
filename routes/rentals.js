@@ -28,34 +28,24 @@ router.post("/", async (req, res) => {
   if (movie.numberInStock === 0)
     return res.status(400).send("Movie not in stock");
 
-  const rental = new Rental({
+  let rental = new Rental({
     customer: {
-      _id: customer.id,
+      _id: customer._id,
       name: customer.name,
-      isGold: customer.isGold,
       phone: customer.phone,
     },
     movie: {
-      _id: movie.id,
+      _id: movie._id,
       title: movie.title,
       dailyRentalRate: movie.dailyRentalRate,
     },
   });
+  rental = await rental.save();
 
-  try {
-    new Fawn.Task()
-      .save('rentals', rental)
-      .update('movies', { _id: movie._id }, { 
-        $inc: { numberInStock: -1 }
-      })
-      .run();
-  
-    res.send(rental);
-  }
-  catch(err) {
-    res.status(500).send('Something failed.');
-    console.log(err)
-  }
+  movie.numberInStock--; //* use transactions to ensure both rental and decreement of stocks are done successfully
+  movie.save();
+
+  res.send(rental);
 });
 
 module.exports = router;

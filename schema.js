@@ -1,4 +1,5 @@
 const Joi = require("joi");
+Joi.objectId = require('joi-objectid')(Joi)
 
 const genreSchema = Joi.object({
   genre: Joi.string().required(),
@@ -14,12 +15,12 @@ const movieSchema = Joi.object({
   title: Joi.string().min(5).max(255).required(),
   numberInStock: Joi.number().positive().max(255),
   dailyRentalRate: Joi.number().positive().max(255),
-  genreId: Joi.string().required(),
+  genreId: Joi.objectId().required(),
 });
 
 const rentalSchema = Joi.object({
-  movieId: Joi.string().required(),
-  customerId: Joi.string().required(),
+  movieId: Joi.objectId().required(),
+  customerId: Joi.objectId().required(),
 });
 
 module.exports = { genreSchema, customerInterface, movieSchema, rentalSchema };
