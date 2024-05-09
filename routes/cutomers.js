@@ -1,4 +1,4 @@
-const Customer = require('../models/cutomer')
+const { Customer } = require("../models/cutomer");
 const express = require("express");
 const { customerInterface } = require("../schema");
 const { badRequest, notFound } = require("../utils");
