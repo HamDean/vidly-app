@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
     isGold: req.body.isGold,
   });
 
-  //   await customer.save();
+  await customer.save();
   res.send(customer);
 });
 
